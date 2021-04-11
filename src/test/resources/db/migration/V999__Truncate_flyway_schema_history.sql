@@ -1,0 +1,1 @@
+TRUNCATE flyway_schema_history;

@@ -19,17 +19,15 @@ import net.gillets.pivo.domain.pivo.audit.PivoCreationEntityAuditListener;
 @Table(name = "pivo_entity_link_type")
 @Data
 public class PivoEntityLinkType implements Serializable {
-    
+
     private static final long serialVersionUID = 5463218459140900922L;
 
     @Id
     @Column(name = "pivo_entity_link_type", nullable = false, unique = true, length = 50)
     private String entityLinkType;
 
-    @AttributeOverride(name="createdAtLocalDate",
-                           column=@Column(name = "pivo_entity_link_type_created_at_date", columnDefinition = "DATE", nullable = false))
-    @AttributeOverride(name="createdAtOffsetTime",
-                           column=@Column(name = "pivo_entity_link_type_created_at_time", columnDefinition = "TIME WITH TIME ZONE", nullable = false))
+    @AttributeOverride(name = "createdAtLocalDate", column = @Column(name = "pivo_entity_link_type_created_at_date", columnDefinition = "DATE", nullable = false))
+    @AttributeOverride(name = "createdAtOffsetTime", column = @Column(name = "pivo_entity_link_type_created_at_time", columnDefinition = "TIME WITH TIME ZONE", nullable = false))
     @Embedded
     protected PivoCreationEntityAudit pivoCreationEntityAudit;
 

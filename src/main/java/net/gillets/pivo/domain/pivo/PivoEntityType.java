@@ -32,10 +32,8 @@ public class PivoEntityType implements Serializable {
     @Column(name = "pivo_entity_type_enable", nullable = false)
     private boolean enable;
 
-    @AttributeOverride(name="createdAtLocalDate",
-                            column=@Column(name = "pivo_entity_type_created_at_date", columnDefinition = "DATE", nullable = false))
-    @AttributeOverride(name="createdAtOffsetTime",
-                            column=@Column(name = "pivo_entity_type_created_at_time", columnDefinition = "TIME WITH TIME ZONE", nullable = false))
+    @AttributeOverride(name = "createdAtLocalDate", column = @Column(name = "pivo_entity_type_created_at_date", columnDefinition = "DATE", nullable = false))
+    @AttributeOverride(name = "createdAtOffsetTime", column = @Column(name = "pivo_entity_type_created_at_time", columnDefinition = "TIME WITH TIME ZONE", nullable = false))
     @Embedded
     private PivoCreationEntityAudit pivoCreationEntityAudit;
 }

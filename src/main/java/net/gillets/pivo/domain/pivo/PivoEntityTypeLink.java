@@ -25,7 +25,7 @@ import net.gillets.pivo.domain.pivo.id.PivoEntityTypeLinkId;
 @Data
 @IdClass(PivoEntityTypeLinkId.class)
 public class PivoEntityTypeLink implements Serializable {
-    
+
     private static final long serialVersionUID = 196100985095968753L;
 
     @Id
@@ -35,32 +35,29 @@ public class PivoEntityTypeLink implements Serializable {
     @Id
     @Column(name = "pivo_entity_b_type", nullable = false, insertable = false, updatable = false, length = 50)
     private String entityBTypeCode;
-    
+
     @Id
     @Column(name = "pivo_entity_link_type", nullable = false, insertable = false, updatable = false, length = 50)
     private String entityLinkTypeCode;
 
-    
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name="pivo_entity_a_type")
+    @JoinColumn(name = "pivo_entity_a_type")
     private PivoEntityType entityAType;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name="pivo_entity_b_type")
+    @JoinColumn(name = "pivo_entity_b_type")
     private PivoEntityType entityBType;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name="pivo_entity_link_type")
+    @JoinColumn(name = "pivo_entity_link_type")
     private PivoEntityLinkType entityLinkType;
 
     @Column(name = "pivo_entity_type_link_enable", nullable = false)
     private boolean enable;
 
-    @AttributeOverride(name="createdAtLocalDate",
-                            column=@Column(name = "pivo_entity_type_link_created_at_date", columnDefinition = "DATE", nullable = false))
-    @AttributeOverride(name="createdAtOffsetTime",
-                            column=@Column(name = "pivo_entity_type_link_created_at_time", columnDefinition = "TIME WITH TIME ZONE", nullable = false))
+    @AttributeOverride(name = "createdAtLocalDate", column = @Column(name = "pivo_entity_type_link_created_at_date", columnDefinition = "DATE", nullable = false))
+    @AttributeOverride(name = "createdAtOffsetTime", column = @Column(name = "pivo_entity_type_link_created_at_time", columnDefinition = "TIME WITH TIME ZONE", nullable = false))
     @Embedded
-    private PivoCreationEntityAudit pivoCreationEntityAudit;   
+    private PivoCreationEntityAudit pivoCreationEntityAudit;
 
 }

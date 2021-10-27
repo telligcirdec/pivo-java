@@ -26,4 +26,5 @@ public class Group extends PivoEntity<Group, GroupData> {
     @Embedded
     private GroupData data;
 
+    
 }

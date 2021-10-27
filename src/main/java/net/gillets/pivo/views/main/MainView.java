@@ -1,5 +1,10 @@
 package net.gillets.pivo.views.main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.vaadin.flow.component.Component;
@@ -16,12 +21,17 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
+import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.RouteParameters;
 import com.vaadin.flow.router.RouterLink;
 
-import net.gillets.pivo.views.about.AboutView;
-import net.gillets.pivo.views.helloworld.HelloWorldView;
-import net.gillets.pivo.views.helloworld1.HelloWorld1View;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import net.gillets.pivo.views.entity.EntityView;
+import net.gillets.pivo.views.pivo.DataExplorerView;
+import net.gillets.pivo.views.pivo.PivoViewableRepositoryDiscover;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -35,10 +45,12 @@ public class MainView extends AppLayout {
      */
     private static final long serialVersionUID = 5233844653852624575L;
 
+    private final PivoViewableRepositoryDiscover pivoViewableRepositoryDiscover; 
     private final Tabs menu;
     private H1 viewTitle;
 
-    public MainView() {
+    public MainView(@Autowired PivoViewableRepositoryDiscover pivoViewableRepositoryDiscover) {
+        this.pivoViewableRepositoryDiscover = pivoViewableRepositoryDiscover;
         setPrimarySection(Section.DRAWER);
         addToNavbar(true, createHeaderContent());
         menu = createMenu();
@@ -85,16 +97,29 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[] {
-            createTab("Hello World", HelloWorldView.class),
-            createTab("About", AboutView.class),
-            createTab("Hello World1", HelloWorld1View.class)
-        };
+        List<Tab> tabs = new ArrayList<>(pivoViewableRepositoryDiscover.getdataExplorerViewMap().size());
+        Iterator<Map.Entry<String,DataExplorerView<?,?>>> it = pivoViewableRepositoryDiscover.getdataExplorerViewMap().entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String,DataExplorerView<?,?>> pair = it.next();
+
+
+            //pair.getValue().getPivoViewableRepository().menuTitle()
+
+            String menuTitle = StringUtils.isNotBlank(pair.getValue().getPivoViewableRepository().menuTitle())?pair.getValue().getPivoViewableRepository().menuTitle():pair.getKey();
+
+            Tab tab = createTab(menuTitle, EntityView.class, new RouteParameters("entity",pair.getKey()));
+            tabs.add(tab);
+        }
+        return tabs.toArray(new Tab[]{});
     }
 
-    private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
+    private static Tab createTab(String text, Class<? extends Component> navigationTarget, RouteParameters routeParameters) {
         final Tab tab = new Tab();
-        tab.add(new RouterLink(text, navigationTarget));
+        if(routeParameters != null){
+            tab.add(new RouterLink(text, navigationTarget, routeParameters));
+        } else { 
+            tab.add(new RouterLink(text, navigationTarget));
+        }
         ComponentUtil.setData(tab, Class.class, navigationTarget);
         return tab;
     }
@@ -114,6 +139,14 @@ public class MainView extends AppLayout {
     }
 
     private String getCurrentPageTitle() {
-        return getContent().getClass().getAnnotation(PageTitle.class).value();
+        String currentComponentTitle = "";
+        PageTitle pageTitleByAnnotation = getContent().getClass().getAnnotation(PageTitle.class);
+        if(pageTitleByAnnotation != null){
+            currentComponentTitle = pageTitleByAnnotation.value();
+        } else if(HasDynamicTitle.class.isAssignableFrom(getContent().getClass())){
+                HasDynamicTitle currentComponentHasDynamicTitleClass = HasDynamicTitle.class.cast(getContent());
+                currentComponentTitle = currentComponentHasDynamicTitleClass.getPageTitle();            
+        }
+        return currentComponentTitle;
     }
 }

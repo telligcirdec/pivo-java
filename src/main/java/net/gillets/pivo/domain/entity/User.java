@@ -26,6 +26,4 @@ public class User extends PivoEntity<User, UserData> {
     @Embedded
     private UserData data;
 
-    
-
 }

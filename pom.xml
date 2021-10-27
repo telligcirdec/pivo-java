@@ -10,7 +10,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.4</version>
+        <version>2.5.5</version>
     </parent>
 
     <properties>
@@ -20,11 +20,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         
         <!-- Version de vaadin -->
-        <vaadin.version>19.0.2</vaadin.version>
+        <vaadin.version>21.0.2</vaadin.version>
         <!-- Ajoute des outils pour vaadin -->
-        <org.vaadin.artur.a-vaadin-helper.version>1.6.0</org.vaadin.artur.a-vaadin-helper.version>
-        <!-- Permet de travailler avec le type jsonb de postgresql -->
-        <com.vladmihalcea.hibernate-types-52.version>2.10.4</com.vladmihalcea.hibernate-types-52.version>
+        <org.vaadin.artur.a-vaadin-helper.version>1.7.2</org.vaadin.artur.a-vaadin-helper.version>
     </properties>
 
     <repositories>
@@ -121,12 +119,6 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
-
-       <!-- <dependency>
-            <groupId>com.vladmihalcea</groupId>
-            <artifactId>hibernate-types-52</artifactId>
-            <version>${com.vladmihalcea.hibernate-types-52.version}</version>
-        </dependency> -->
 
         <!-- Lombok-->
         <dependency>
